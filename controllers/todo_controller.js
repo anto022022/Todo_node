@@ -1,6 +1,4 @@
 const Todo = require("../models/todo")
-const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
 
 const returnRes = (res,status, message,code, data) => {
   return res.json({
@@ -62,6 +60,18 @@ module.exports = {
         console.log('result---->',result);
         if(!result) return returnRes(res,true,"Task not found",200,'')
         return returnRes(res,true,"Task deleted successfully",200,'')
+    }
+    catch(error){
+        return returnRes(res,false,"Something went wrong",500, error.message)
+    }
+ },
+
+ DeleteAll:async (req,res) =>{ 
+    try{
+        let result = await Todo.deleteMany({})
+        console.log('result---->',result);
+        if(!result) return returnRes(res,true,"Task not found",200,'')
+        return returnRes(res,true,"Tasks deleted successfully",200,'')
     }
     catch(error){
         return returnRes(res,false,"Something went wrong",500, error.message)

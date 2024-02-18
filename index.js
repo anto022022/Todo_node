@@ -24,12 +24,8 @@ mongoose.connect(process.env.URL, {
       console.error('Error connecting to MongoDB:', error);
     });
 
-
-app.get('/', (req, res) => {
-    console.log("hit");
-    res.send('Hello World!');
-  });
 app.use('/todo', Router);
+
 app.listen(port, (res) => {
     console.log(`Example app listening on port ${port}, ${res}`)
  })

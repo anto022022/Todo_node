@@ -16,14 +16,13 @@ module.exports = {
       if (!task_name || !task_name.trim())
         return returnRes(res, false, "Empty response", 200, "");
       let totalCount = await Todo.countDocuments();
-      if (totalCount > 30)
+      if (totalCount > 29)
         return returnRes(res, false, "Max limit of tasks reached!", 200, "");
       let taskNameExist = await Todo.find({ task_name: task_name });
       if (taskNameExist.length > 0)
         return returnRes(res, false, "Duplicate task", 200, "");
       let data = new Todo({ task_name: task_name, is_completed: false });
       data.save();
-      console.log("result---->", data);
       if (!data) return returnRes(res, false, "Task creation failed", 200, "");
       return returnRes(res, true, "Task created successfully", 200, "");
     } catch (error) {
@@ -40,7 +39,6 @@ module.exports = {
       if (taskNameExist.length > 0)
         return returnRes(res, false, "Duplicate task", 200, "");
       let result = await Todo.findByIdAndUpdate(_id, { task_name: task_name });
-      console.log("result---->", result);
       if (!result) return returnRes(res, false, "Task not found", 200, result);
       return returnRes(res, true, "Task updated successfully", 200, "");
     } catch (error) {
@@ -54,7 +52,6 @@ module.exports = {
       if (!_id || !_id.trim())
         return returnRes(res, false, "Empty id", 200, "");
       let result = await Todo.findByIdAndUpdate(_id, { is_completed: true });
-      console.log("result---->", result);
       if (!result) return returnRes(res, false, "Task not found", 200, "");
       return returnRes(res, true, "Task updated successfully", 200, "");
     } catch (error) {
@@ -68,7 +65,6 @@ module.exports = {
       if (!_id || !_id.trim())
         return returnRes(res, false, "Empty id", 200, "");
       let result = await Todo.findByIdAndDelete(_id);
-      console.log("result---->", result);
       if (!result) return returnRes(res, false, "Task not found", 200, "");
       return returnRes(res, true, "Task deleted successfully", 200, "");
     } catch (error) {
@@ -79,7 +75,6 @@ module.exports = {
   DeleteAll: async (req, res) => {
     try {
       let result = await Todo.deleteMany({});
-      console.log("result---->", result);
       if (!result) return returnRes(res, false, "Task not found", 200, "");
       return returnRes(res, true, "Tasks deleted successfully", 200, "");
     } catch (error) {
@@ -92,7 +87,6 @@ module.exports = {
       const { page, limit } = req.query;
       if (!page || !page.trim() || !limit || !limit.trim())
         return returnRes(res, false, "fetching tasks failed", 200, "");
-      console.log("parms", req.query);
       const startIndex = (page - 1) * limit;
       let data = await Todo.find().skip(startIndex).limit(limit);
       let totalCount = await Todo.countDocuments();

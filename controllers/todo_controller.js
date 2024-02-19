@@ -18,10 +18,15 @@ module.exports = {
       let totalCount = await Todo.countDocuments();
       if (totalCount > 29)
         return returnRes(res, false, "Max limit of tasks reached!", 200, "");
-      let taskNameExist = await Todo.find({ task_name: task_name });
+      let taskNameExist = await Todo.find({
+        task_name: task_name.toLowerCase(),
+      });
       if (taskNameExist.length > 0)
         return returnRes(res, false, "Duplicate task", 200, "");
-      let data = new Todo({ task_name: task_name, is_completed: false });
+      let data = new Todo({
+        task_name: task_name.toLowerCase(),
+        is_completed: false,
+      });
       data.save();
       if (!data) return returnRes(res, false, "Task creation failed", 200, "");
       return returnRes(res, true, "Task created successfully", 200, "");
@@ -35,10 +40,14 @@ module.exports = {
       let { _id, task_name } = req.body;
       if (!_id || !task_name || !_id.trim() || !task_name.trim())
         return returnRes(res, false, "Empty response", 200, "");
-      let taskNameExist = await Todo.find({ task_name: task_name });
+      let taskNameExist = await Todo.find({
+        task_name: task_name.toLowerCase(),
+      });
       if (taskNameExist.length > 0)
         return returnRes(res, false, "Duplicate task", 200, "");
-      let result = await Todo.findByIdAndUpdate(_id, { task_name: task_name });
+      let result = await Todo.findByIdAndUpdate(_id, {
+        task_name: task_name.toLowerCase(),
+      });
       if (!result) return returnRes(res, false, "Task not found", 200, result);
       return returnRes(res, true, "Task updated successfully", 200, "");
     } catch (error) {
